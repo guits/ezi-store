@@ -2,12 +2,13 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
-import ezi-store
+import ezistore
+
+ROOT_LOG = 'ezi-store'
 
 Base = declarative_base()
 engine = create_engine('sqlite:///mymusic.db', echo=True)
-print config.load(default_config)
-exit(1)
+#print config.load(default_config)
 
 class Address(Base):
     __tablename__ = 'address'
@@ -19,5 +20,3 @@ class Address(Base):
 engine = create_engine('sqlite:///sqlalchemy_example.db')
  
 Base.metadata.create_all(engine)
-
-exit(1)
