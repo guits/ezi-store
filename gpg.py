@@ -11,8 +11,7 @@ class Gpg(object):
         self._gpg_key_type = self._gpg_config['key_type']
         self._gpg_key_length = self._gpg_config['key_length']
         self._gpg_expire_data = self._gpg_config['expire_date']
-#        self._gpg_name_real = self._gpg_config['name_real']
-        self._gpg_name_real = 'ezi_store_srv'
+        self._gpg_name_real = self._gpg_config['name_real']
         self._gpg_name_comment = self._gpg_config['name_comment']
         self._gpg_name_email = self._gpg_config['name_email']
 
