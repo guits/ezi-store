@@ -61,16 +61,15 @@ if __name__ == '__main__':
                               'name_email': 'ezi-store@zigzag.sx',
                               'name_comment': 'ezi-store server key'}
                      }
-
     config = Config(configfilename)
     merged_config = config.load(default_config)
-    
     init_log(filename=merged_config['default']['logfilename'])
-    gpg = Gpg(merged_config)
+    
+#    gpg = Gpg(configuration = merged_config)
     gpg.srv_pub_key_exist()
 #    gpg.gen_key()
 #    gpg.list_keys()
 #    gpg.export_armored_srv_pub_key('CA9338C386BE60FC')
     exit(1)
-    core = Core(configuration = config.load(default_config))
+    core = Core(configuration = merged_config)
     core.run()

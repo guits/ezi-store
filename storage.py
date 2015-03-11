@@ -30,12 +30,12 @@ Base.metadata.create_all(engine)
 class Storage(object):
     def __init__(self):
         self._Session = sessionmaker(bind=engine)
-        self._session = Session()
+        self._session = self._Session()
 
     def get_keys(self):
         return self._session.query(Setup).all()
 
     def set_key(self, keyid, expires, length, fingerprint, type, uids):
-        new_key = Setup(keyid = '123', expires = '21/02/00', length='1024', fingerprint='aa:cc', type='RSA', uids='foo')
+        new_key = Setup(keyid = '123', expires = '21/02/00', length='1024', fingerprint='aa:cc', type='pub', uids='foo')
         self._session.add(new_key)
         self._session.commit()
