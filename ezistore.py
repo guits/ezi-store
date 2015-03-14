@@ -66,7 +66,7 @@ if __name__ == '__main__':
     init_log(filename=merged_config['default']['logfilename'])
     
 #    gpg = Gpg(configuration = merged_config)
-    gpg.srv_pub_key_exist()
+#    gpg.srv_pub_key_exist()
 #    gpg.gen_key()
 #    gpg.list_keys()
 #    gpg.export_armored_srv_pub_key('CA9338C386BE60FC')

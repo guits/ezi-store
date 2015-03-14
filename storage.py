@@ -6,8 +6,26 @@ Base = declarative_base()
 engine = create_engine('sqlite:///ezistore.db', echo=False)
 
 
-class Setup(Base):
-    __tablename__ = 'setup'
+class Server_gpg(Base):
+    __tablename__ = 'srv_gpg'
+    id = Column(Integer, primary_key=True)
+    keyid = Column(String(250))
+    expires = Column(String(250))
+    length = Column(String(250))
+    fingerprint = Column(String(250))
+    type = Column(String(3))
+    uids = Column(String(250))
+
+    def __init__(self, keyid, expires, length, fingerprint, type, uids):
+        self.keyid = keyid
+        self.expires = expires
+        self.length = length
+        self.fingerprint = fingerprint
+        self.type = type
+        self.uids = uids
+
+class Client_gpg(Base):
+    __tablename__ = 'client_gpg'
     id = Column(Integer, primary_key=True)
     keyid = Column(String(250))
     expires = Column(String(250))

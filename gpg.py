@@ -21,22 +21,36 @@ class Gpg(object):
     def gen_key(self):
         key = self._gpg.gen_key(self._input_data)
 
-    def srv_pub_key_exist(self):
-        keys = self._gpg.list_keys()
-        if keys == []:
-            self._LOG.info('Server public key doesn\'t exist')
-            return None
-#        ret = True
-#        if self._gpg.list_keys() == []:
-#            self._LOG.info('Public key doesn\'t exist')
-#            ret = False
-#        if self._gpg.list_keys(True) == []:
-#            self._LOG.info('Private key doesn\'t exist')
-#            ret = False
-#        return retr
+#{'dummy': u'', 'keyid': u'6981BB47EFDDAE99', 'expires': u'1457590722', 'subkeys': [], 'length': u'4096', 'ownertrust': u'u', 'algo': u'1', 'fingerprint': u'B61DDBA1101F5374BB974BFF6981BB47EFDDAE99', 'date': u'1426054722', 'trust': u'u', 'type': u'pub', 'uids': [u'Ezi Store (ezi-store server key) <ezi-store@zigzag.sx>']}
 
-#    def export_armored_srv_pub_key(self, keyid):
-#        return self._gpg.export_keys(keyid)
-#
-#    def export_armored_srv_sec_key(self, keyid):
-#        return self._gpg.export_keys(keyid, True)
+    def get_sec_keys(self):
+        sec_keys = self._gpg.list_keys(True)
+        if sec_keys == []:
+            self._LOG.debug('No sec keys found')
+            return None
+        return sec_keys
+
+    def list_keys(self):
+        keys = self._gpg.list_keys()
+        tmp_keys = self._gpg.list_keys(True)
+        for key in tmp_keys:
+            keys.append(key)
+        if keys == []:
+            self._LOG.debug('No key found')
+            return None
+        for key in keys:
+            print "--------------------------------------------------------------"
+            for k, v in key.iteritems():
+                if (v != 'u') and (k != 'uids') and (v != ''):
+                    print "%s:\t%s" % (k, v)
+                if k == 'uids':
+                    print "uids:"
+                    for uid in v:
+                        print "\t%s" % (uid)
+        print "--------------------------------------------------------------"
+
+    def export_armored_pub_key(self, keyid):
+        return self._gpg.export_keys(keyid)
+
+    def export_armored_sec_key(self, keyid):
+        return self._gpg.export_keys(keyid, True)
