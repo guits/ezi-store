@@ -23,13 +23,6 @@ class Gpg(object):
 
 #{'dummy': u'', 'keyid': u'6981BB47EFDDAE99', 'expires': u'1457590722', 'subkeys': [], 'length': u'4096', 'ownertrust': u'u', 'algo': u'1', 'fingerprint': u'B61DDBA1101F5374BB974BFF6981BB47EFDDAE99', 'date': u'1426054722', 'trust': u'u', 'type': u'pub', 'uids': [u'Ezi Store (ezi-store server key) <ezi-store@zigzag.sx>']}
 
-    def get_sec_keys(self):
-        sec_keys = self._gpg.list_keys(True)
-        if sec_keys == []:
-            self._LOG.debug('No sec keys found')
-            return None
-        return sec_keys
-
     def list_keys(self):
         keys = self._gpg.list_keys()
         tmp_keys = self._gpg.list_keys(True)
@@ -48,6 +41,8 @@ class Gpg(object):
                     for uid in v:
                         print "\t%s" % (uid)
         print "--------------------------------------------------------------"
+
+    def remove_keys(
 
     def export_armored_pub_key(self, keyid):
         return self._gpg.export_keys(keyid)

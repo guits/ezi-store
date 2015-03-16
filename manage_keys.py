@@ -24,7 +24,7 @@ if __name__ == '__main__':
                          action="store", metavar="FILE")
     parser.add_argument("-g", "--generate", help="generate keys",
                          action="store_true")
-    parser.add_argument("-l", "--list", help="list keys", action="store", default='all', nargs='?')
+    parser.add_argument("-l", "--list", help="list keys", action="store_true")
     args = parser.parse_args()
     if args.config:
        configfilename=args.config
@@ -35,11 +35,7 @@ if __name__ == '__main__':
     merged_config = config.load(default_config = default_config)
     gpg = Gpg(configuration = merged_config)
 
-    if args.list is None:
+    if args.list:
         gpg.list_keys()
-        #gpg.get_pub_keys()
-       # gpg.get_sec_keys()
-    if args.list == 'pub':
-        gpg.get_pub_keys()
-    if args.list == 'sec':
-        gpg.get_sec_keys()
+    if args.generate:
+        gpg.gen_key()
