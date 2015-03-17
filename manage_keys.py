@@ -25,7 +25,9 @@ if __name__ == '__main__':
     parser.add_argument("-g", "--generate", help="generate keys",
                          action="store_true")
     parser.add_argument("-l", "--list", help="list keys", action="store_true")
+    parser.add_argument("-r", "--remove", help="remove keys", action="store", nargs=1, metavar="fingerprint")
     args = parser.parse_args()
+
     if args.config:
        configfilename=args.config
     else:
@@ -38,4 +40,7 @@ if __name__ == '__main__':
     if args.list:
         gpg.list_keys()
     if args.generate:
-        gpg.gen_key()
+        gpg.gen_keys()
+
+    if args.remove:
+        gpg.remove_keys(fingerprint = args.remove)
