@@ -67,7 +67,7 @@ if __name__ == '__main__':
     
 #    gpg = Gpg(configuration = merged_config)
 #    gpg.srv_pub_key_exist()
-#    gpg.gen_key()
+#    gpg.gen_keys()
 #    gpg.list_keys()
 #    gpg.export_armored_srv_pub_key('CA9338C386BE60FC')
     exit(1)

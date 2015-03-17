@@ -32,5 +32,5 @@ class Config(object):
         return merged_config
 
 #    gpg.srv_pub_key_exist()
-#    gpg.gen_key()
+#    gpg.gen_keys()
 #    gpg.list_keys()
