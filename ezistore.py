@@ -50,10 +50,13 @@ if __name__ == '__main__':
     else:
        configfilename='/opt/ezi-store/config'
 
-    default_config = {'default': {'bind_address': '127.0.0.1',
-                                  'bind_port': '40000',
+    default_config = {'server': {
+                                  'bind_address': '127.0.0.1',
+                                  'bind_port': '40000'},
+                      'logging': {
                                   'logfilename': '/var/log/ezistore'},
-                      'gpg': {'gnupghome': '/opt/ezi-store/gpg',
+                      'gpg': {
+                              'gnupghome': '/opt/ezi-store/gpg',
                               'key_type': 'RSA',
                               'key_length': '4096',
                               'expire_date': '365d',
@@ -63,7 +66,7 @@ if __name__ == '__main__':
                      }
     config = Config(configfilename)
     merged_config = config.load(default_config)
-    init_log(filename=merged_config['default']['logfilename'])
+    init_log(filename=merged_config['logging']['logfilename'])
     
 #    gpg = Gpg(configuration = merged_config)
 #    gpg.srv_pub_key_exist()

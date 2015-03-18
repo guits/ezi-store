@@ -2,6 +2,12 @@ import ConfigParser
 import logging
 from gpg import *
 
+class InvalidMode(Exception):
+    def __init__(self, value):
+        self._value = value
+
+    def __str__(self):
+        return repr(self._value)
 
 class Config(object):
     def __init__(self, filename):
@@ -29,8 +35,20 @@ class Config(object):
         for name_section in self._conf.sections():
             configured[name_section] = dict(self._conf.items(name_section))
         merged_config = self._merge(default_config, configured)
+        try:
+            if merged_config['global']['mode'] == 'client':
+                print merged_config['gpg']['server_public_key']
+                print merged_config['gpg']['client_secret_key']
+                print merged_config['gpg']['client_public_key']
+            if merged_config['global']['mode'] == 'server':
+                print merged_config['gpg']['client_public_key']
+                print merged_config['gpg']['server_secret_key']
+                print merged_config['gpg']['server_public_key']
+            raise InvalidMode(merged_config['global']['mode'])
+        except InvalidMode as err:
+            print 'You must choose either client or server mode. (Configured mode: %s)' % err
+            exit(-1)
+        except KeyError as err:
+            print "Missing parameter in configuration: %s" % err
+            exit(-1)
         return merged_config
-
-#    gpg.srv_pub_key_exist()
-#    gpg.gen_keys()
-#    gpg.list_keys()

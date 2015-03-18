@@ -5,7 +5,7 @@ import argparse
 from config import *
 
 if __name__ == '__main__':
-    default_config = {'default': {'bind_address': '127.0.0.1',
+    default_config = {'server': {'bind_address': '127.0.0.1',
                                   'bind_port': '40000',
                                   'logfilename': '/var/log/ezistore'},
                       'gpg': {'gnupghome': '/opt/ezi-store/gpg',
@@ -26,6 +26,10 @@ if __name__ == '__main__':
                          action="store_true")
     parser.add_argument("-l", "--list", help="list keys", action="store_true")
     parser.add_argument("-r", "--remove", help="remove keys", action="store", nargs=1, metavar="fingerprint")
+    parser.add_argument("-e", "--export-public-key", help="export a public key with armor", action="store", nargs=1, metavar="fingerprint")
+    parser.add_argument("-E", "--export-secret-key", help="export key", action="store", nargs=1, metavar="fingerprint")
+
+
     args = parser.parse_args()
 
     if args.config:
@@ -44,3 +48,8 @@ if __name__ == '__main__':
 
     if args.remove:
         gpg.remove_keys(fingerprint = args.remove)
+
+    if args.export_secret_key:
+        print gpg.export_armored_sec_key(args.export_secret_key)
+    if args.export_public_key:
+        print gpg.export_armored_pub_key(args.export_public_key)
