@@ -37,14 +37,23 @@ class Config(object):
         merged_config = self._merge(default_config, configured)
         try:
             if merged_config['global']['mode'] == 'client':
+                if (('server_public_key' not in merged_config['gpg'].keys()) or
+                   ('client_secret_key' not in merged_config['gpg'].keys()) or
+                   ('client_public_key' not in merged_config['gpg'].keys())):
+                    raise KeyError('See needed gpg parameters for client mode')
                 print merged_config['gpg']['server_public_key']
                 print merged_config['gpg']['client_secret_key']
                 print merged_config['gpg']['client_public_key']
-            if merged_config['global']['mode'] == 'server':
+            elif merged_config['global']['mode'] == 'server':
+                if (('server_public_key' not in merged_config['gpg'].keys()) or
+                   ('server_secret_key' not in merged_config['gpg'].keys()) or
+                   ('client_public_key' not in merged_config['gpg'].keys())):
+                    raise KeyError('See needed gpg parameters for server mode')
                 print merged_config['gpg']['client_public_key']
                 print merged_config['gpg']['server_secret_key']
                 print merged_config['gpg']['server_public_key']
-            raise InvalidMode(merged_config['global']['mode'])
+            else:
+                raise InvalidMode(merged_config['global']['mode'])
         except InvalidMode as err:
             print 'You must choose either client or server mode. (Configured mode: %s)' % err
             exit(-1)
