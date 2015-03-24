@@ -1,6 +1,6 @@
 import ConfigParser
 import logging
-from gpg import *
+from ezistore.gpg import *
 
 class InvalidMode(Exception):
     def __init__(self, value):

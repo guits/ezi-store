@@ -2,7 +2,7 @@
 
 import gnupg
 import argparse
-from config import *
+from ezistore.config import *
 
 if __name__ == '__main__':
     default_config = {'server': {'bind_address': '127.0.0.1',

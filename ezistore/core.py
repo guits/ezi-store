@@ -6,10 +6,10 @@ import subprocess
 import logging
 import datetime
 import argparse
-from storage import *
-from config import *
-from gpg import *
-from server import *
+from ezistore.storage import *
+from ezistore.config import *
+from ezistore.gpg import *
+from ezistore.server import *
 
 ROOT_LOG = 'ezi-store'
 
