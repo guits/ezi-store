@@ -36,23 +36,7 @@ class Config(object):
             configured[name_section] = dict(self._conf.items(name_section))
         merged_config = self._merge(default_config, configured)
         try:
-            if merged_config['global']['mode'] == 'client':
-                if (('server_public_key' not in merged_config['gpg'].keys()) or
-                   ('client_secret_key' not in merged_config['gpg'].keys()) or
-                   ('client_public_key' not in merged_config['gpg'].keys())):
-                    raise KeyError('See needed gpg parameters for client mode')
-                print merged_config['gpg']['server_public_key']
-                print merged_config['gpg']['client_secret_key']
-                print merged_config['gpg']['client_public_key']
-            elif merged_config['global']['mode'] == 'server':
-                if (('server_public_key' not in merged_config['gpg'].keys()) or
-                   ('server_secret_key' not in merged_config['gpg'].keys()) or
-                   ('client_public_key' not in merged_config['gpg'].keys())):
-                    raise KeyError('See needed gpg parameters for server mode')
-                print merged_config['gpg']['client_public_key']
-                print merged_config['gpg']['server_secret_key']
-                print merged_config['gpg']['server_public_key']
-            else:
+            if (merged_config['global']['mode'] != 'client') and (merged_config['global']['mode'] != 'server'):
                 raise InvalidMode(merged_config['global']['mode'])
         except InvalidMode as err:
             print 'You must choose either client or server mode. (Configured mode: %s)' % err
@@ -61,3 +45,21 @@ class Config(object):
             print "Missing parameter in configuration: %s" % err
             exit(-1)
         return merged_config
+
+#    def validate(self, merged_config = {}):
+#            if merged_config['global']['mode'] == 'client':
+#                if (('server_public_key' not in merged_config['gpg'].keys()) or
+#                   ('client_secret_key' not in merged_config['gpg'].keys()) or
+#                   ('client_public_key' not in merged_config['gpg'].keys())):
+#                    raise KeyError('See needed gpg parameters for client mode')
+#                print merged_config['gpg']['server_public_key']
+#                print merged_config['gpg']['client_secret_key']
+#                print merged_config['gpg']['client_public_key']
+#            elif merged_config['global']['mode'] == 'server':
+#                if (('server_public_key' not in merged_config['gpg'].keys()) or
+#                   ('server_secret_key' not in merged_config['gpg'].keys()) or
+#                   ('client_public_key' not in merged_config['gpg'].keys())):
+#                    raise KeyError('See needed gpg parameters for server mode')
+#                print merged_config['gpg']['client_public_key']
+#                print merged_config['gpg']['server_secret_key']
+#                print merged_config['gpg']['server_public_key']
