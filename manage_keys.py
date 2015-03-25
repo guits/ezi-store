@@ -4,7 +4,7 @@ import gnupg
 import argparse
 from ezistore.config import *
 
-if __name__ == '__main__':
+def _init_args():
     default_config = {'server': {'bind_address': '127.0.0.1',
                                   'bind_port': '40000',
                                   'logfilename': '/var/log/ezistore'},
@@ -32,6 +32,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    return args
+
+def _check_args(args=None):
     if args.config:
        configfilename=args.config
     else:
@@ -53,3 +56,7 @@ if __name__ == '__main__':
         print gpg.export_armored_sec_key(args.export_secret_key)
     if args.export_public_key:
         print gpg.export_armored_pub_key(args.export_public_key)
+
+if __name__ == '__main__':
+    args = _init_args()
+    _check_args(args=args)
