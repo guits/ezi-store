@@ -46,6 +46,10 @@ def ezistored():
                               'name_comment': 'ezi-store server key'}
                      }
     config = Config(configfilename)
+    if config == None:
+        #TODO: Make something better
+        print "Can't merge configuration"
+        return None
     merged_config = config.load(default_config)
     init_log(filename=merged_config['logging']['logfilename'])
     

@@ -8,6 +8,8 @@ class TestConfig(unittest.TestCase):
     def test_init(self, mock_configparser):
         filename = '/foo/bar'
         config = Config(filename)
+        config._conf.sections.return_value = None
+        print config._conf.sections.return_value
         foo = {}
         config.load()
 

@@ -26,10 +26,10 @@ class Config(object):
                 raise InvalidMode(merged_config['global']['mode'])
         except InvalidMode as err:
             print 'You must choose either client or server mode. (Configured mode: %s)' % err
-            exit(-1)
+            return None
         except KeyError as err:
             print "Missing parameter in configuration: %s" % err
-            exit(-1)
+            return None
         return merged_config
 
 #    def validate(self, merged_config = {}):
