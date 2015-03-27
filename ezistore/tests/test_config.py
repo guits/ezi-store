@@ -8,10 +8,19 @@ class TestConfig(unittest.TestCase):
     def test_init(self, mock_configparser):
         filename = '/foo/bar'
         config = Config(filename)
-        config._conf.sections.return_value = None
-        print config._conf.sections.return_value
-        foo = {}
-        config.load()
+
+        config._conf.sections.return_value = ['global', 'server', 'gpg', 'misc']
+        #print mock_configparser._conf.sections.return_value
+
+        config._conf.items('global').return_value = [('mode', 'server')]
+        config._conf.items('server').return_value = [('bind_address', '0.0.0.0'), ('bind_port', '40000')]
+
+        #print mock_configparser._conf.items('global').return_value
+        print config._conf.items('server')
+
+        default_config = {'global': { 'mode': 'client'}}
+        merged_config = config.load(default_config = default_config)
+        print merged_config
 
 if __name__ == '__main__':
     unittest.main()
@@ -32,10 +41,10 @@ if __name__ == '__main__':
 #                 raise InvalidMode(merged_config['global']['mode'])
 #         except InvalidMode as err:
 #             print 'You must choose either client or server mode. (Configured mode: %s)' % err
-#             exit(-1)
+#             return None
 #         except KeyError as err:
 #             print "Missing parameter in configuration: %s" % err
-#             exit(-1)
+#             return None
 #         return merged_config
 
 #@mockpatch('os.path')
