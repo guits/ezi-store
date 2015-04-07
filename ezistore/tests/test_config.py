@@ -3,11 +3,23 @@ import mock
 from ezistore.config import *
 
 class TestConfig(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super(TestConfig, self).__init__(*args, **kwargs)
+        self.filename = '/foo/bar'
 
     @mock.patch('ezistore.config.ConfigParser.ConfigParser')
-    def test_init(self, mock_configparser):
-        filename = '/foo/bar'
-        config = Config(filename)
+    def setUp(self, mock_configparser):
+        self.config = Config(self.filename)
+
+
+    def test_constructor(self):
+        self.config._conf.read.assert_called_once_with(self.filename)
+
+
+    @mock.patch('ezistore.config.ConfigParser.ConfigParser')
+    def test_load(self, mock_configparser):
+
+
         default_config = {'server': {
                                       'bind_address': '127.0.0.1',
                                       'bind_port': '40000'},
@@ -23,14 +35,14 @@ class TestConfig(unittest.TestCase):
                                   'name_comment': 'ezi-store server key'}
                          }
 
-        config._conf.sections.return_value = ['global', 'server', 'gpg', 'misc']
+        self.config._conf.sections.return_value = ['global', 'server', 'gpg', 'misc']
         vals = {('global',): [('mode', 'server')], ('server',): [('bind_address', '0.0.0.0'), ('bind_port', '40000')], ('gpg',): [('foo', 'bar')], ('misc',): [('foo', 'bar')]}
         def side_effect(*args):
             return vals[args]
-        config._conf.items = mock.MagicMock(side_effect=side_effect)
+        self.config._conf.items = mock.MagicMock(side_effect=side_effect)
 
 
-        merged_config = config.load(default_config = default_config)
+        merged_config = self.config.load(default_config = default_config)
         print merged_config
 
 if __name__ == '__main__':
