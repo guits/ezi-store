@@ -1,0 +1,5 @@
+python-gnupg
+argparse
+tox
+mock
+unittest2
