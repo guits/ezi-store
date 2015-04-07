@@ -9,6 +9,6 @@ setup(name='ezi-store',
       author='guits',
       author_email='guits@zigzag.sx',
       url='https://github.com/guits/ezi-store',
-      packages=['ezi-store'],
+      packages=['ezistore'],
       scripts=['ezistored.py'],
      )
