@@ -8,17 +8,28 @@ class TestConfig(unittest.TestCase):
     def test_init(self, mock_configparser):
         filename = '/foo/bar'
         config = Config(filename)
+        default_config = {'server': {
+                                      'bind_address': '127.0.0.1',
+                                      'bind_port': '40000'},
+                          'logging': {
+                                      'logfilename': '/var/log/ezistore'},
+                          'gpg': {
+                                  'gnupghome': '/opt/ezi-store/gpg',
+                                  'key_type': 'RSA',
+                                  'key_length': '4096',
+                                  'expire_date': '365d',
+                                  'name_real': 'Ezi Store',
+                                  'name_email': 'ezi-store@zigzag.sx',
+                                  'name_comment': 'ezi-store server key'}
+                         }
 
         config._conf.sections.return_value = ['global', 'server', 'gpg', 'misc']
-        #print mock_configparser._conf.sections.return_value
+        vals = {('global',): [('mode', 'server')], ('server',): [('bind_address', '0.0.0.0'), ('bind_port', '40000')], ('gpg',): [('foo', 'bar')], ('misc',): [('foo', 'bar')]}
+        def side_effect(*args):
+            return vals[args]
+        config._conf.items = mock.MagicMock(side_effect=side_effect)
 
-        config._conf.items('global').return_value = [('mode', 'server')]
-        config._conf.items('server').return_value = [('bind_address', '0.0.0.0'), ('bind_port', '40000')]
 
-        #print mock_configparser._conf.items('global').return_value
-        print config._conf.items('server')
-
-        default_config = {'global': { 'mode': 'client'}}
         merged_config = config.load(default_config = default_config)
         print merged_config
 
