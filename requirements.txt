@@ -3,3 +3,4 @@ argparse
 tox
 mock
 unittest2
+nose
