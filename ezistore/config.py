@@ -1,6 +1,5 @@
 import ConfigParser
 import logging
-from ezistore.gpg import *
 from ezistore.tools import merge
 
 class InvalidMode(Exception):
