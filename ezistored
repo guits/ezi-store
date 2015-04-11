@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from ezistore.ezistored import *
 
 ROOT_LOG = 'ezi-store'
