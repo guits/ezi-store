@@ -7,4 +7,3 @@ class Core(object):
     def run(self):
         for i in self._server.getmessage():
             print i
--
