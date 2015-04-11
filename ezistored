@@ -1,4 +1,4 @@
-from ezistore.core import *
+from ezistore.ezistored import *
 
 ROOT_LOG = 'ezi-store'
 
