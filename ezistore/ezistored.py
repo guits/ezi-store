@@ -10,7 +10,29 @@ from ezistore.storage import *
 from ezistore.config import *
 from ezistore.core import *
 
+ROOT_LOG = 'ezi-store'
+
+def init_log(filename='/var/log/ezistore'):
+    LOG = logging.getLogger(ROOT_LOG)
+    LOG.setLevel(logging.DEBUG)
+
+    handler_file = logging.FileHandler(filename=filename)
+    handler_file.setLevel(logging.DEBUG)
+
+    handler_stream = logging.StreamHandler()
+    handler_stream.setLevel(logging.INFO)
+
+    formatter_file = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler_file.setFormatter(formatter_file)
+
+    formatter_stream = logging.Formatter('%(message)s')
+    handler_stream.setFormatter(formatter_stream)
+
+    LOG.addHandler(handler_file)
+    LOG.addHandler(handler_stream)
+
 def ezistored():
+    LOG = logging.getLogger("%s.%s" % (ROOT_LOG, self.__class__.__name__))
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="config file",
                         required=True, action="store", metavar="FILE")
@@ -36,17 +58,13 @@ def ezistored():
                      }
     config = Config(configfilename)
     if config == None:
-        #TODO: Make something better
-        print "Can't merge configuration"
+        LOG.error("Can't load config file")
         return None
     merged_config = config.load(default_config)
+    if merged_config == None:
+        LOG.error("Can't merge config file")
+        return None
     init_log(filename=merged_config['logging']['logfilename'])
     
-#    gpg = Gpg(configuration = merged_config)
-#    gpg.srv_pub_key_exist()
-#    gpg.gen_keys()
-#    gpg.list_keys()
-#    gpg.export_armored_srv_pub_key('CA9338C386BE60FC')
-    exit(1)
     core = Core(configuration = merged_config)
     core.run()

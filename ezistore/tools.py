@@ -1,3 +1,10 @@
+class InvalidMode(Exception):
+    def __init__(self, value):
+        self._value = value
+
+    def __str__(self):
+        return repr(self._value)
+
 def merge(a, b, path=None):
     # merges b into a
     if path is None: path = []

@@ -30,3 +30,6 @@ class Server(object):
                         break
             finally:
                 connection.close()
+
+    def sendmessage(self):
+        pass
