@@ -14,13 +14,14 @@ from ezistore.tools import *
 def ezistored():
     LOG = logging.getLogger("%s" % (__name__))
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", help="config file",
-                        required=True, action="store", metavar="FILE")
+    default_config_file = '/opt/ezi-store/config'
+
+    parser.add_argument("-c", "--config", help="specify config file, default: %s" % (default_config_file),
+                         action="store", metavar="FILE", default=default_config_file)
+    
     args = parser.parse_args()
-    if args.config:
-       configfilename=args.config
-    else:
-       configfilename='/opt/ezi-store/config'
+
+    configfilename=args.config
 
     default_config = {'server': {
                                   'bind_address': '127.0.0.1',

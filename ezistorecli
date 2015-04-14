@@ -8,6 +8,7 @@ import datetime
 import argparse
 from ezistore.config import *
 from ezistore.tools import *
+from ezistore.client import *
 
 def ezistorecli():
     default_config_file = '/opt/ezi-store/config-client'
@@ -15,11 +16,9 @@ def ezistorecli():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="specify config file, default: %s" % (default_config_file),
                          action="store", metavar="FILE", default=default_config_file)
+    parser.add_argument("-s", "--search", help="search with a pattern", action="store", metavar='PATTERN')
     args = parser.parse_args()
-    if args.config:
-       configfilename=args.config
-    else:
-       configfilename='/opt/ezi-store/config'
+    configfilename=args.config
 
     default_config = {'server': {
                                   'bind_address': '127.0.0.1',
@@ -43,4 +42,13 @@ def ezistorecli():
     if merged_config == None:
         LOG.error("Can't merge config file")
         return None
+
     init_log(ROOT_LOG=__name__.split('.')[0], filename=merged_config['logging']['logfilename'])
+
+    client = Client(merged_config)
+
+    if args.search:
+        print args.search
+
+if __name__ == '__main__':
+    ezistorecli()
