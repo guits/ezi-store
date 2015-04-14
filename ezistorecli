@@ -6,16 +6,15 @@ import subprocess
 import logging
 import datetime
 import argparse
-from ezistore.storage import *
 from ezistore.config import *
-from ezistore.core import *
 from ezistore.tools import *
 
-def ezistored():
-    LOG = logging.getLogger("%s" % (__name__))
+def ezistorecli():
+    default_config_file = '/opt/ezi-store/config-client'
+    LOG = logging.getLogger("%s" % __name__)
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", help="config file",
-                        required=True, action="store", metavar="FILE")
+    parser.add_argument("-c", "--config", help="specify config file, default: %s" % (default_config_file),
+                         action="store", metavar="FILE", default=default_config_file)
     args = parser.parse_args()
     if args.config:
        configfilename=args.config
@@ -45,6 +44,3 @@ def ezistored():
         LOG.error("Can't merge config file")
         return None
     init_log(ROOT_LOG=__name__.split('.')[0], filename=merged_config['logging']['logfilename'])
-    
-    core = Core(configuration = merged_config)
-    core.run()

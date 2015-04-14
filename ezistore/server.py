@@ -1,11 +1,9 @@
 import logging
 import socket
 
-ROOT_LOG = 'ezi-store'
-
 class Server(object):
     def __init__(self, configuration = {}):
-        self._LOG = logging.getLogger("%s.%s" % (ROOT_LOG, self.__class__.__name__))
+        self._LOG = logging.getLogger("%s.%s" % (__name__,self.__class__.__name__))
 	self._server_bind = (configuration['server']['bind_address'], int(configuration['server']['bind_port']))
 	self._LOG.info('bind to %s' % (configuration['server']['bind_address']))
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
