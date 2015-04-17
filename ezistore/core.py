@@ -9,6 +9,9 @@ class Core(object):
     def run(self):
         for i in self._server.getmessage():
             print i
+            reply = "foobar"
+            self._server.sendmessage(message=reply)
+            self._server.close()
 #        gpg.srv_pub_key_exist()
 #        gpg.gen_keys()
 #        gpg.list_keys()

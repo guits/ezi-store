@@ -12,7 +12,7 @@ from ezistore.client import *
 
 def ezistorecli():
     default_config_file = '/opt/ezi-store/config-client'
-    LOG = logging.getLogger("%s" % __name__)
+    LOG = logging.getLogger("ezistore.ezistorecli")
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="specify config file, default: %s" % (default_config_file),
                          action="store", metavar="FILE", default=default_config_file)
@@ -43,12 +43,12 @@ def ezistorecli():
         LOG.error("Can't merge config file")
         return None
 
-    init_log(ROOT_LOG=__name__.split('.')[0], filename=merged_config['logging']['logfilename'])
+    init_log(ROOT_LOG='ezistore', filename=merged_config['logging']['logfilename'])
 
     client = Client(merged_config)
-
     if args.search:
         print args.search
+        client.do_query(message=args.search)
 
 if __name__ == '__main__':
     ezistorecli()

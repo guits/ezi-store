@@ -3,23 +3,27 @@ import socket
 
 class Client(object):
     def __init__(self, configuration = {}):
-        self._LOG = logging.getLogger("%s" % (__name__))
+        self._LOG = logging.getLogger("%s.%s" % (__name__,self.__class__.__name__))
+        self._config = configuration
+
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._connect(host=configuration['client']['server_address'], port=configuration['client']['server_port'])
-        for i in self._sock.getmessage():
-            print i
+    def do_query(self, message=None):
+        self._sock.connect((self._config['client']['server_address'], int(self._config['client']['server_port'])))
+        self._sendmessage(message=message)
+        self._getmessage()
 
     def _connect(self, host, port):
         self._sock.connect((host, port))
 
-    def sendmessage(self, message):
+    def _sendmessage(self, message):
         self._sock.send(message)
+        self._LOG.info('client data sent= %s', (message))
 
-    def getmessage(self):
-#        data = self._socket.recv(16)
+    def _getmessage(self):
         while True:
             data = self._sock.recv(16)
             if data:
-                self._LOG.debug('data= %s' % (data.rstrip()))
-                yield data.rstrip()
+                self._LOG.info('client data recv= %s' % (data.rstrip()))
+#                yield data.rstrip()
             else:
+                break
