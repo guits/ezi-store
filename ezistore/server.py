@@ -14,19 +14,14 @@ class Server(object):
         while True:
             self._LOG.info('waiting for a connection')
             self._connection, self._client_address = self._sock.accept()
-            try:
-                self._LOG.info('connection from %s %s' % (self._client_address[0], self._client_address[1]))
-                while True:
-                    data = self._connection.recv(16)
-                    if data:
-                        self._LOG.info('srv data recv= %s' % (data.rstrip()))
-                        yield data.rstrip()
-                    else:
-                        self._LOG.info('Connection closed from %s %s' % (self._client_address[0], self._client_address[1]))
-                        break
-            finally:
-                print "close here"
-                self.close()
+            self._LOG.info('connection from %s %s' % (self._client_address[0], self._client_address[1]))
+            data = self._connection.recv(16)
+            if data:
+                self._LOG.info('srv data recv= %s' % (data.rstrip()))
+                yield data.rstrip()
+            else:
+                self._LOG.info('Connection closed from %s %s' % (self._client_address[0], self._client_address[1]))
+                break
 
     def sendmessage(self, message=None):
         self._connection.sendall(message)
@@ -35,3 +30,4 @@ class Server(object):
     def close(self):
         self._connection.shutdown(socket.SHUT_RDWR)
         self._connection.close()
+        self._LOG.info('closed client connection %s:%s' % (self._client_address[0], self._client_address[1]))

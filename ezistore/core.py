@@ -7,10 +7,8 @@ class Core(object):
         self._gpg = Gpg(configuration = configuration)
 
     def run(self):
-        for i in self._server.getmessage():
-            print i
-            reply = "foobar"
-            self._server.sendmessage(message=reply)
+        for query in self._server.getmessage():
+            self._server.sendmessage(message='fOObar!')
             self._server.close()
 #        gpg.srv_pub_key_exist()
 #        gpg.gen_keys()

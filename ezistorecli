@@ -47,7 +47,6 @@ def ezistorecli():
 
     client = Client(merged_config)
     if args.search:
-        print args.search
         client.do_query(message=args.search)
 
 if __name__ == '__main__':
