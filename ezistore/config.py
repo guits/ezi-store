@@ -20,8 +20,8 @@ class Config(object):
             if (merged_config['global']['mode'] != 'client') and (merged_config['global']['mode'] != 'server'):
                 self._LOG.error("Invalide mode in configuration : %s" % merged_config['global']['mode'])
                 return None
-            if ('server_key' not in merged_config['gpg'].keys()) or
-               ('client_key' not in merged_config['gpg'].keys()):
+            if (('server_key' not in merged_config['gpg'].keys()) or
+               ('client_key' not in merged_config['gpg'].keys())):
                 self._LOG.error("error with gpg configuration")
                 return None
         except KeyError as err:
