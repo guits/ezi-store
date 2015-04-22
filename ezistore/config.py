@@ -29,5 +29,4 @@ class Config(object):
 #TODO: improve this part. At this stade, init_log has not been called ...
 #            self._LOG.error("Missing parameter in configuration: %s" % err)
             return None
-        print merged_config
         return merged_config

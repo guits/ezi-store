@@ -22,8 +22,6 @@ class Gpg(object):
     def gen_keys(self):
         key = self._gpg.gen_key(self._input_data)
 
-#{'dummy': u'', 'keyid': u'6981BB47EFDDAE99', 'expires': u'1457590722', 'subkeys': [], 'length': u'4096', 'ownertrust': u'u', 'algo': u'1', 'fingerprint': u'B61DDBA1101F5374BB974BFF6981BB47EFDDAE99', 'date': u'1426054722', 'trust': u'u', 'type': u'pub', 'uids': [u'Ezi Store (ezi-store server key) <ezi-store@zigzag.sx>']}
-
     def list_keys(self):
         keys = self._gpg.list_keys()
         tmp_keys = self._gpg.list_keys(True)
@@ -58,4 +56,8 @@ class Gpg(object):
 
     def encode(self, data, keyid):
         encoded = self._gpg.encrypt(data=data, recipients=keyid, always_trust=True)
-        print "encoding: %s with %s\ndata:%s" % (data, keyid, encoded)
+        return encoded
+
+    def decode(self, data, keyid):
+        decoded = self._gpg.decrypt(data, always_trust=True)
+        return decoded

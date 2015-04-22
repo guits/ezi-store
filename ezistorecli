@@ -46,12 +46,12 @@ def ezistorecli():
 
     init_log(ROOT_LOG='ezistore', filename=merged_config['logging']['logfilename'])
 
-    client = Client(merged_config)
-    if args.search:
-        client.do_query(message=args.search)
-
     gpg = Gpg(merged_config)
-    gpg.encode('foo', 'E86218E41939A728')
+    client = Client(merged_config)
+    
+    if args.search:
+        message = gpg.encode(data=args.search, keyid=merged_config['gpg']['server_key'])
+        client.do_query(message=message)
 
 if __name__ == '__main__':
     ezistorecli()

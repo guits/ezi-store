@@ -16,14 +16,18 @@ class Client(object):
         self._sock.connect((host, port))
 
     def _sendmessage(self, message):
-        self._sock.send(message)
-        self._LOG.info('client data sent= %s', (message))
+        self._sock.send(str(message))
+        self._LOG.debug('client data sent= %s', (message))
 
     def _getmessage(self):
         while True:
             data = self._sock.recv(16)
             if data:
-                self._LOG.info('client data recv= %s' % (data.rstrip()))
-#                yield data.rstrip()
+                self._LOG.debug('client data recv= %s' % (data.rstrip()))
             else:
-                break
+                self.close()
+                return data
+
+    def close(self):
+        self._sock.shutdown(socket.SHUT_RDWR)
+        self._sock.close()
