@@ -31,3 +31,7 @@ class Server(object):
         self._connection.shutdown(socket.SHUT_RDWR)
         self._connection.close()
         self._LOG.info('closed client connection %s:%s' % (self._client_address[0], self._client_address[1]))
+
+    def killserver(self):
+        self._sock.shutdown(socket.SHUT_RDWR)
+        self._sock.close()

@@ -9,6 +9,7 @@ import argparse
 from ezistore.config import *
 from ezistore.tools import *
 from ezistore.client import *
+from ezistore.gpg import *
 
 def ezistorecli():
     default_config_file = '/opt/ezi-store/config-client'
@@ -48,6 +49,9 @@ def ezistorecli():
     client = Client(merged_config)
     if args.search:
         client.do_query(message=args.search)
+
+    gpg = Gpg(merged_config)
+    gpg.encode('foo', 'E86218E41939A728')
 
 if __name__ == '__main__':
     ezistorecli()

@@ -7,9 +7,12 @@ class Core(object):
         self._gpg = Gpg(configuration = configuration)
 
     def run(self):
-        for query in self._server.getmessage():
-            self._server.sendmessage(message='fOObar!')
-            self._server.close()
+        try:
+            for query in self._server.getmessage():
+                self._server.sendmessage(message='fOObar!')
+                self._server.close()
+        except KeyboardInterrupt as err:
+            self._server.killserver()
 #        gpg.srv_pub_key_exist()
 #        gpg.gen_keys()
 #        gpg.list_keys()

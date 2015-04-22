@@ -57,3 +57,7 @@ class Gpg(object):
 
     def import_keys(self, data):
         self._gpg.import_keys(data)
+
+    def encode(self, data, keyid):
+        encoded = self._gpg.encrypt(data=data, recipients=keyid, always_trust=True)
+        print "encoding: %s with %s\ndata:%s" % (data, keyid, encoded)

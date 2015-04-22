@@ -20,20 +20,12 @@ class Config(object):
             if (merged_config['global']['mode'] != 'client') and (merged_config['global']['mode'] != 'server'):
                 self._LOG.error("Invalide mode in configuration : %s" % merged_config['global']['mode'])
                 return None
-#TODO: improve this part as id and fingerprint are the same for both public and secret key
-            if merged_config['global']['mode'] == 'client':
-                if (('server_public_key' not in merged_config['gpg'].keys()) or
-                   ('client_secret_key' not in merged_config['gpg'].keys()) or
-                   ('client_public_key' not in merged_config['gpg'].keys())):
-                    self._LOG.error("error client gpg")
-                    return None
-            elif merged_config['global']['mode'] == 'server':
-                if (('server_public_key' not in merged_config['gpg'].keys()) or
-                   ('server_secret_key' not in merged_config['gpg'].keys()) or
-                   ('client_public_key' not in merged_config['gpg'].keys())):
-                    self._LOG.error("error server gpg")
-                    return None
+            if ('server_key' not in merged_config['gpg'].keys()) or
+               ('client_key' not in merged_config['gpg'].keys()):
+                self._LOG.error("error with gpg configuration")
+                return None
         except KeyError as err:
             self._LOG.error("Missing parameter in configuration: %s" % err)
             return None
+        print merged_config
         return merged_config
