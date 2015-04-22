@@ -66,6 +66,19 @@ class TestConfig(unittest.TestCase):
         merged_config = self.config.load(default_config = self.default_config)
         self.assertEquals(merged_config, None)
 
+    @mock.patch('ezistore.config.ConfigParser.ConfigParser')
+    def test_load_missing_keys(self, mock_configparser):
+
+        self.config._conf.sections.return_value = ['global', 'server', 'gpg', 'misc']
+        vals = {('global',): [('mode', 'client')], ('server',): [('bind_address', '0.0.0.0'), ('bind_port', '40000')], ('gpg',): [('foo', 'bar')], ('misc',): [('foo', 'bar')]}
+        def side_effect(*args):
+            return vals[args]
+        self.config._conf.items = mock.MagicMock(side_effect=side_effect)
+
+        merged_config = self.config.load(default_config = self.default_config)
+        self.assertEquals(merged_config, None)
+
+
 if __name__ == '__main__':
     unittest.main()
 
