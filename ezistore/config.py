@@ -2,11 +2,10 @@ import ConfigParser
 import logging
 from ezistore.tools import merge, InvalidMode
 
-ROOT_LOG = 'ezi-store'
-
 class Config(object):
     def __init__(self, filename):
-        self._LOG = logging.getLogger("%s.%s" % (ROOT_LOG, self.__class__.__name__)) 
+#TODO: improve this part. At this stade, init_log has not been called ...
+#        self._LOG = logging.getLogger("%s.%s" % (__name__, self.__class__.__name__)) 
         self._filename = filename
         self._conf = ConfigParser.ConfigParser()
         self._conf.read(filename)
@@ -18,14 +17,17 @@ class Config(object):
         merged_config = merge(default_config, configured)
         try:
             if (merged_config['global']['mode'] != 'client') and (merged_config['global']['mode'] != 'server'):
-                self._LOG.error("Invalide mode in configuration : %s" % merged_config['global']['mode'])
+#TODO: improve this part. At this stade, init_log has not been called ...
+#                self._LOG.error("Invalide mode in configuration : %s" % merged_config['global']['mode'])
                 return None
             if (('server_key' not in merged_config['gpg'].keys()) or
                ('client_key' not in merged_config['gpg'].keys())):
-                self._LOG.error("error with gpg configuration")
+#TODO: improve this part. At this stade, init_log has not been called ...
+#                self._LOG.error("error with gpg configuration")
                 return None
         except KeyError as err:
-            self._LOG.error("Missing parameter in configuration: %s" % err)
+#TODO: improve this part. At this stade, init_log has not been called ...
+#            self._LOG.error("Missing parameter in configuration: %s" % err)
             return None
         print merged_config
         return merged_config

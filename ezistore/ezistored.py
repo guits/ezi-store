@@ -46,6 +46,5 @@ def ezistored():
         LOG.error("Can't merge config file")
         return None
     init_log(ROOT_LOG=__name__.split('.')[0], filename=merged_config['logging']['logfilename'])
-    
     core = Core(configuration = merged_config)
     core.run()

@@ -34,14 +34,13 @@ class TestConfig(unittest.TestCase):
     def test_load_direct_ok(self, mock_configparser):
 
         self.config._conf.sections.return_value = ['global', 'server', 'gpg', 'misc']
-        vals = {('global',): [('mode', 'server')], ('server',): [('bind_address', '0.0.0.0'), ('bind_port', '40000')], ('gpg',): [('foo', 'bar')], ('misc',): [('foo', 'bar')]}
+        vals = {('global',): [('mode', 'server')], ('server',): [('bind_address', '0.0.0.0'), ('bind_port', '40000')], ('gpg',): [('client_key', '1234'),('server_key', '4567')], ('misc',): [('foo', 'bar')]}
         def side_effect(*args):
             return vals[args]
         self.config._conf.items = mock.MagicMock(side_effect=side_effect)
-
         merged_config = self.config.load(default_config = self.default_config)
 
-        self.assertEquals(merged_config, {'global': {'mode': 'server'}, 'misc': {'foo': 'bar'}, 'gpg': {'gnupghome': '/opt/ezi-store/gpg', 'name_real': 'Ezi Store', 'name_comment': 'ezi-store server key', 'name_email': 'ezi-store@zigzag.sx', 'key_type': 'RSA', 'expire_date': '365d', 'foo': 'bar', 'key_length': '4096'}, 'logging': {'logfilename': '/var/log/ezistore'}, 'server': {'bind_port': '40000', 'bind_address': '0.0.0.0'}})
+        self.assertEquals(merged_config, {'global': {'mode': 'server'}, 'misc': {'foo': 'bar'}, 'gpg': {'gnupghome': '/opt/ezi-store/gpg', 'name_real': 'Ezi Store', 'name_comment': 'ezi-store server key', 'name_email': 'ezi-store@zigzag.sx', 'key_type': 'RSA', 'expire_date': '365d', 'client_key': '1234', 'server_key': '4567', 'key_length': '4096'}, 'logging': {'logfilename': '/var/log/ezistore'}, 'server': {'bind_port': '40000', 'bind_address': '0.0.0.0'}})
 
     @mock.patch('ezistore.config.ConfigParser.ConfigParser')
     def test_load_invalid_mode(self, mock_configparser):

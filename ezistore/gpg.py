@@ -1,12 +1,10 @@
 import gnupg
 import logging
 
-ROOT_LOG = 'ezi-store'
-
 class Gpg(object):
     def __init__(self, configuration={}):
         try:
-            self._LOG = logging.getLogger("%s.%s" % (ROOT_LOG, self.__class__.__name__))
+            self._LOG = logging.getLogger("%s.%s" % (__name__, self.__class__.__name__))
             self._gpg_config = dict(configuration['gpg'])
             self._gpg_gpghome = self._gpg_config['gnupghome']
             self._gpg_key_type = self._gpg_config['key_type']
