@@ -10,7 +10,7 @@ class Client(object):
     def do_query(self, message=None):
         self._sock.connect((self._config['client']['server_address'], int(self._config['client']['server_port'])))
         self._sendmessage(message=message)
-        self._getmessage()
+        return self._getmessage()
 
     def _connect(self, host, port):
         self._sock.connect((host, port))
@@ -21,10 +21,9 @@ class Client(object):
 
     def _getmessage(self):
         while True:
-            data = self._sock.recv(16)
+            data = self._sock.recv(2048)
             if data:
                 self._LOG.debug('client data recv= %s' % (data.rstrip()))
-            else:
                 self.close()
                 return data
 

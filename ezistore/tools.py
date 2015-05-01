@@ -1,5 +1,49 @@
 import logging
 
+class Colorize(object):
+    _grey = '\033[1;30m'
+    _red = '\033[1;31m'
+    _green = '\033[1;32m'
+    _yellow = '\033[1;33m'
+    _blue = '\033[1;34m'
+    _magenta = '\033[1;35m'
+    _cyan = '\033[1;36m'
+    _white = '\033[0;37m'
+    _end = '\033[1;m'
+
+    @staticmethod
+    def grey(text):
+        return '%s%s%s' % (Colorize._grey, text, Colorize._end)
+
+    @staticmethod
+    def red(text):
+        return '%s%s%s' % (Colorize._red, text, Colorize._end)
+
+    @staticmethod
+    def green(text):
+        return '%s%s%s' % (Colorize._green, text, Colorize._end)
+
+    @staticmethod
+    def yellow(text):
+        return '%s%s%s' % (Colorize._yellow, text, Colorize._end)
+
+    @staticmethod
+    def blue(text):
+        return '%s%s%s' % (Colorize._blue, text, Colorize._end)
+
+    @staticmethod
+    def magenta(text):
+        return '%s%s%s' % (Colorize._magenta, text, Colorize._end)
+
+    @staticmethod
+    def cyan(text):
+        return '%s%s%s' % (Colorize._cyan, text, Colorize._end)
+
+    @staticmethod
+    def white(text):
+        return '%s%s%s' % (Colorize._white, text, Colorize._end)
+
+
 class InvalidMode(Exception):
     def __init__(self, value):
         self._value = value
