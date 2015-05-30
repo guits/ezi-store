@@ -18,6 +18,7 @@ def ezistorecli():
     parser.add_argument("-c", "--config", help="specify config file, default: %s" % (default_config_file),
                          action="store", metavar="FILE", default=default_config_file)
     parser.add_argument("-s", "--search", help="search with a pattern", action="store", metavar='PATTERN')
+    parser.add_argument("-d", "--delete", help="delete entry in base", action="store", metavar='PATTERN')
     args = parser.parse_args()
     configfilename=args.config
 
@@ -51,7 +52,11 @@ def ezistorecli():
     
     if args.search:
         message = gpg.encode(data='FIND ' + args.search, keyid=merged_config['gpg']['server_key'])
-        print Colorize.red(gpg.decode(data=client.do_query(message=message), keyid=merged_config['gpg']['client_key']))
+        print gpg.decode(data=client.do_query(message=message), keyid=merged_config['gpg']['client_key'])
+
+    if args.delete:
+        message = gpg.encode(data='DELETE ' + args.delete, keyid=merged_config['gpg']['server_key'])
+        print gpg.decode(data=client.do_query(message=message), keyid=merged_config['gpg']['client_key'])
 
 if __name__ == '__main__':
     ezistorecli()
