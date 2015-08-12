@@ -32,9 +32,10 @@ class Storage(object):
     def get(self, search):
         return self._session.query(Passwords).filter(Passwords.comment.like("%s%%" % search)).all()
 
-#TODO: Implement this method
     def delete(self, id):
-        pass
+        result = self._session.query(Passwords).filter(Passwords.id==id).delete()
+        print result
+        return result
 
     def add(self, login, password, url, comment):
         new = Passwords(login, password, url, comment)
