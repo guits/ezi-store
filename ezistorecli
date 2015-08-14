@@ -15,10 +15,16 @@ def ezistorecli():
     default_config_file = '/opt/ezi-store/config-client'
     LOG = logging.getLogger("ezistore.ezistorecli")
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", help="specify config file, default: %s" % (default_config_file),
+    parser.add_argument("-f", "--config", help="specify config file, default: %s" % (default_config_file),
                          action="store", metavar="FILE", default=default_config_file)
+    parser.add_argument("-a", "--add", help="add a password", action="store_true")
+    parser.add_argument("-l", "--login", help="specify login", action="store", metavar='login')
+    parser.add_argument("-p", "--password", help="specify password", action="store", metavar='pass')
+    parser.add_argument("-c", "--comment", help="specify a comment", action="store", metavar='comment')
+    parser.add_argument("-u", "--url", help="specify an url", action="store", metavar='url')
     parser.add_argument("-s", "--search", help="search with a pattern", action="store", metavar='PATTERN')
-    parser.add_argument("-d", "--delete", help="delete entry in base", action="store", metavar='PATTERN')
+    parser.add_argument("-d", "--delete", help="delete entry in base", action="store", metavar='id')
+
     args = parser.parse_args()
     configfilename=args.config
 
@@ -50,6 +56,21 @@ def ezistorecli():
     gpg = Gpg(merged_config)
     client = Client(merged_config)
     
+    if args.add:
+        if args.login == None:
+            print "Missing argument: -l <login>"
+            exit(1)
+        if args.password == None:
+            print "Missing argument: -p <password>"
+            exit(1)
+        if args.comment == None:
+            print "Missing argument: -c \"comment\""
+            exit(1)
+        if args.url == None:
+            args.url = 'N/A'
+        message = gpg.encode(data='ADD %s|%s|%s|%s' % (args.login,args.password,args.comment,args.url), keyid=merged_config['gpg']['server_key'])
+        print gpg.decode(data=client.do_query(message=message), keyid=merged_config['gpg']['client_key'])
+
     if args.search:
         message = gpg.encode(data='FIND ' + args.search, keyid=merged_config['gpg']['server_key'])
         print gpg.decode(data=client.do_query(message=message), keyid=merged_config['gpg']['client_key'])

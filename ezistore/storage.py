@@ -13,7 +13,7 @@ class Passwords(EzistoreDB):
     url = Column(String(250))
     comment = Column(String(250))
 
-    def __init__(self, login, password, url, comment):
+    def __init__(self, login=None, password=None, comment=None, url=None):
         self.login = login
         self.password = password
         self.url = url
@@ -37,7 +37,7 @@ class Storage(object):
         print result
         return result
 
-    def add(self, login, password, url, comment):
-        new = Passwords(login, password, url, comment)
+    def add(self, login = None, password = None, url = None, comment = None):
+        new = Passwords(login = login, password = password, url = url, comment = comment)
         self._session.add(new)
         self._session.commit()
